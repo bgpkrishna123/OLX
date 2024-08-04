@@ -11,6 +11,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import axios from 'axios';
+import url from './vars'; // Ensure this path is correct
 
 const categories = [
   { title: "Cars", items: ["Cars"] },
@@ -115,11 +117,30 @@ const categories = [
   },
 ];
 
-const DownNavbar = () => {
+const DownNavbar = ({ setItems, setLoading }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleToggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleCategoryClick = async (category) => {
+    try {
+      setLoading(true);
+      const response = await axios.post(`${url}/items/category`, {
+        category
+      });
+
+      if (Array.isArray(response.data)) {
+        setItems(response.data);
+      } else {
+        console.error("Expected an array but got:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching items by category:", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -142,11 +163,18 @@ const DownNavbar = () => {
                     px={4}
                     bg="gray.100"
                     _hover={{ bg: "gray.200" }}
+                    onClick={() => handleCategoryClick(category.title)}
                   >
                     {category.title}
                   </MenuItem>
                   {category.items.map((item, itemIndex) => (
-                    <MenuItem key={itemIndex} as="a" href="#" px={4}>
+                    <MenuItem
+                      key={itemIndex}
+                      as="a"
+                      href="#"
+                      px={4}
+                      onClick={() => handleCategoryClick(item)}
+                    >
                       {item}
                     </MenuItem>
                   ))}
@@ -158,25 +186,25 @@ const DownNavbar = () => {
             </Grid>
           </MenuList>
         </Menu>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("Cars")}>
           Car
         </Text>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("Motorcycles")}>
           Motorcycles
         </Text>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("Mobile Phones")}>
           Mobile Phones
         </Text>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("Houses & Apartments")}>
           For Sale: Houses & Apartments
         </Text>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("Scooters")}>
           Scooters
         </Text>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("Commercial & Other Vehicles")}>
           Commercial & Other Vehicles
         </Text>
-        <Text _hover={{ color: "teal.500" }} fontWeight={400}>
+        <Text _hover={{ color: "teal.500" }} fontWeight={400} onClick={() => handleCategoryClick("For Rent: Houses & Apartments")}>
           For Rent: Houses & Apartments
         </Text>
       </Flex>

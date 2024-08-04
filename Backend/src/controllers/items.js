@@ -37,6 +37,62 @@ const getAllUnsoldItems = async (req, res) => {
   }
 };
 
+const getAllItems = async (req, res) => {
+  try {
+    const items = await itemModel.find();
+    res.send(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+const getAllSoldItems = async (req,res) => {
+  try {
+    const items = await itemModel.find({ status: "sold" });
+    res.send(items);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+const getAllItemsByCategory = async (req, res) => {
+  const { category } = req.body;
+  try {
+    const items = await itemModel.find({ categories: category });
+    res.send(items);
+  } catch (error) {
+    res.status(500).send({ error: error });
+  }
+}
+
+const searchItemsByName = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const items = await itemModel.find({
+      name: { $regex: new RegExp(name, "i") } 
+    });
+    res.send(items);
+  } catch (error) {
+    console.error("Error searching items by name:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+const searchItemsByLocation = async (req, res) => {
+  const { location } = req.body;  
+  try {
+    const items = await itemModel.find({
+      location: { $regex: new RegExp(location, "i") }
+    });
+    res.send(items);  
+  } catch (error) {
+    console.error("Error searching items by location:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+
+
 const getItemById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,6 +116,8 @@ const getUserItems = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+
 
 const addToFavourites = async (req, res) => {
   const { itemId } = req.body;
@@ -99,4 +157,9 @@ module.exports = {
   getUserPurchases,
   addToFavourites,
   getItemById,
+  getAllItems,
+  getAllSoldItems,
+  searchItemsByName,
+  searchItemsByLocation,
+  getAllItemsByCategory
 };

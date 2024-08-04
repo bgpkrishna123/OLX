@@ -11,16 +11,19 @@ import Navbar from './Navbar';
 import url from './vars';
 import timeAgo from './timeAgo';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
+import Footer from './Footer';
 
 const MyItem = () => {
   const [items, setItems] = useState([]); 
   const URL = url;
+  const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${URL}/items/user`, {
+        const response = await axios.post(`${URL}/items/user`, {}, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -42,8 +45,16 @@ const MyItem = () => {
   return (
     <>
       <Navbar />
-      <Box p="10%" pt="5%" pb="5%">
-        <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+      <Box p={"10%"} pt={"5%"} pb={"5%"} mt={20}>
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)', 
+            sm: 'repeat(2, 1fr)',  
+            md: 'repeat(3, 1fr)',  
+            lg: 'repeat(4, 1fr)', 
+          }}
+          gap={4}
+        >
           {items.map((item) => (
             <Box
               key={item._id}
@@ -52,6 +63,8 @@ const MyItem = () => {
               overflow="hidden"
               maxW={200}
               p={2}
+              onClick={() => navigate(`/itemPage/${item._id}`)}
+              position="relative"
             >
               <Image
                 src={`${URL}/uploads/${item.image}`}
@@ -61,20 +74,19 @@ const MyItem = () => {
               />
               <Box
                 textAlign="center"
-                display="flex"
                 justifyContent="center"
-                alignItems="center"
-                mt={2}
+                display="flex"
+                alignItems="right"
               >
                 <Text>{timeAgo(item.createdAt)}</Text>
               </Box>
               <Box p={4}>
                 <Box
                   textAlign="center"
+                  justifyContent="center"
                   border="1px"
                   borderColor="grey"
                   display="flex"
-                  justifyContent="center"
                   alignItems="center"
                   mb={2}
                 >
@@ -83,17 +95,17 @@ const MyItem = () => {
                   </Text>
                 </Box>
 
-                <Flex align="center">
-                  <Box fontWeight={500} fontSize="x-large">
+                <Flex>
+                  <Box fontWeight={500} fontSize={"x-large"}>
                     <Text mt={2}>₹{item.price}</Text>
                   </Box>
                   <Spacer />
                   <Box
                     border="1px"
                     borderStyle="dotted"
-                    bg={item.status === 'sold' ? 'red.500' : 'green.500'}
+                    bg={item.status === "sold" ? "red.500" : "green.500"}
                     borderColor={
-                      item.status === 'sold' ? 'red.500' : 'green.500'
+                      item.status === "sold" ? "red.500" : "green.500"
                     }
                     borderRadius="50%"
                     p={0.5}
@@ -104,11 +116,11 @@ const MyItem = () => {
                     transformOrigin="center"
                   >
                     <Box
-                      bg="white"
+                      bg={"white"}
                       border="1px"
                       borderStyle="dotted"
                       borderColor={
-                        item.status === 'sold' ? 'red.500' : 'green.500'
+                        item.status === "sold" ? "red.500" : "green.500"
                       }
                       borderRadius="50%"
                       p={2}
@@ -117,12 +129,12 @@ const MyItem = () => {
                       justifyContent="center"
                     >
                       <Text
-                        fontSize="md"
+                        fontSize={"md"}
                         fontWeight={500}
-                        color={item.status === 'sold' ? 'red.500' : 'green.500'}
+                        color={item.status === "sold" ? "red.500" : "green.500"}
                         textAlign="center"
                       >
-                        {item.status === 'sold' ? 'Sold' : 'Unsold'}
+                        {item.status === "sold" ? "Sold" : "Unsold"}
                       </Text>
                     </Box>
                   </Box>
@@ -132,6 +144,7 @@ const MyItem = () => {
           ))}
         </Grid>
       </Box>
+      <Footer/>
     </>
   );
 };
