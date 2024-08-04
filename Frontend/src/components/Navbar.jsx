@@ -12,16 +12,20 @@ import {
   MenuList,
   MenuItem,
   IconButton,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, SearchIcon } from "@chakra-ui/icons"; 
+import { MdSearch } from "react-icons/md";
+import { FaFilter } from "react-icons/fa"; // Importing FaFilter from react-icons
 import DownNavbar from "./DownNavbar";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [locationSearch, setLocationSearch] = useState("");
+  const [itemSearch, setItemSearch] = useState("");
+  const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +37,19 @@ const Navbar = () => {
     localStorage.clear();
     setIsLoggedIn(false);
     navigate("/login");
+  };
+
+  const handleLocationSearchClick = () => {
+    console.log("Location Search:", locationSearch);
+  };
+
+  const handleItemSearchClick = () => {
+    console.log("Item Search:", itemSearch);
+  };
+
+  const handleFilterClick = (filter) => {
+    console.log("Filter by:", filter);
+    setFilterOpen(false); // Close the menu after selection
   };
 
   return (
@@ -58,8 +75,71 @@ const Navbar = () => {
           </Heading>
         </Box>
         <Box display="flex" alignItems="center" flex="1" ml={6}>
-          <Input placeholder="Search location..." size="md" mr={4} w={"30%"} />
-          <Input placeholder="Search Item..." size="md" w={"60%"} />
+          <Input
+            placeholder="Search location..."
+            size="md"
+            mr={4}
+            w={"30%"}
+            value={locationSearch}
+            onChange={(e) => setLocationSearch(e.target.value)}
+          />
+          <IconButton
+            aria-label="Search Location"
+            icon={<SearchIcon />} 
+            ml={-10}
+            backgroundColor={"grey"}
+            variant="outline"
+            colorScheme="blue"
+            onClick={handleLocationSearchClick}
+          />
+          <Input
+            placeholder="Search Item..."
+            size="md"
+            w={"50%"}
+            value={itemSearch}
+            onChange={(e) => setItemSearch(e.target.value)}
+            ml={4}
+          />
+          <IconButton
+            aria-label="Search Item"
+            icon={<MdSearch />} 
+            backgroundColor={"grey"}
+            variant="outline"
+            colorScheme="blue"
+            onClick={handleItemSearchClick}
+          />
+          <Menu
+            isOpen={filterOpen}
+            onOpen={() => setFilterOpen(true)}
+            onClose={() => setFilterOpen(false)}
+          >
+             <MenuButton
+             ml={4}
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
+                    <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      cursor="pointer"
+                    >
+                      <path
+                        fill="#F58332"
+                        d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2zM6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h1.17z"
+                      />
+                    </svg>
+                  </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => handleFilterClick("All Items")}>All Items</MenuItem>
+              <MenuItem onClick={() => handleFilterClick("Sold")}>Sold</MenuItem>
+              <MenuItem onClick={() => handleFilterClick("Unsold")}>Unsold</MenuItem>
+            </MenuList>
+          </Menu>
         </Box>
         <Box>
           <Stack direction="row" spacing={4} align="center">
@@ -107,7 +187,6 @@ const Navbar = () => {
                     <MenuItem as={Link} to="/myItems">
                       My-Items
                     </MenuItem>
-
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </MenuList>
                 </Menu>
