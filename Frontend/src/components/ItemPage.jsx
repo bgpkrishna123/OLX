@@ -21,6 +21,7 @@ import url from "./vars";
 import timeAgo from "./timeAgo";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from "axios";
+import Footer from "./Footer";
 
 const ItemPage = () => {
   const { id } = useParams();
@@ -97,7 +98,7 @@ const ItemPage = () => {
       console.error('Error updating favorites:', error);
       toast({
         title: "Error",
-        description: "An error occurred while updating favorites.",
+        description: "Please Login to add favorites",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -331,6 +332,7 @@ const ItemPage = () => {
           </Box>
         </Flex>
       </Box>
+      <Footer/>
     </>
   );
 };
