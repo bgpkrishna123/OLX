@@ -19,7 +19,7 @@ const Container = ({ items, loading }) => {
   const URL = url;
   const [currentPage, setCurrentPage] = useState(1);
   const [progress, setProgress] = useState(0);
-  const itemsPerPage = 9;
+  const itemsPerPage = 12;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -170,6 +170,7 @@ const Container = ({ items, loading }) => {
         <Stack spacing={4} direction="row">
           {pageNumbers.map((number) => (
             <Button
+              mt={4}
               key={number}
               onClick={() => paginate(number)}
               variant={number === currentPage ? "solid" : "outline"}
