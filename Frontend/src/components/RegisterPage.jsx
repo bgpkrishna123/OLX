@@ -9,6 +9,7 @@ import {
   Text,
   Link,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import url from "./vars";
@@ -89,6 +90,22 @@ const RegisterPage = () => {
         boxShadow="md"
       >
         <form onSubmit={handleRegister}>
+        <Flex
+      alignItems="center"
+      justifyContent="center"
+      bg="gray.100" 
+    >
+      <Text 
+        fontSize="3xl" 
+        fontWeight="extrabold" 
+        textAlign="center" 
+        color="teal.600"
+      >
+        Discover Great Deals
+        <br />
+        Sign In to OLX
+      </Text>
+    </Flex>
           <FormControl mb={4}>
             <FormLabel htmlFor="name">Name</FormLabel>
             <Input

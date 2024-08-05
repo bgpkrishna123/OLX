@@ -9,6 +9,7 @@ import {
   Text,
   Link,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import url from "./vars";
@@ -87,6 +88,22 @@ const LoginPage = () => {
         boxShadow="md"
       >
         <form onSubmit={handleLogin}>
+        <Flex
+      alignItems="center"
+      justifyContent="center"
+      bg="gray.100" 
+    >
+      <Text 
+        fontSize="3xl" 
+        fontWeight="extrabold" 
+        textAlign="center" 
+        color="teal.600"
+      >
+        Welcome Back!
+        <br />
+        Please Log In
+      </Text>
+    </Flex>
           <FormControl mb={4}>
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input
