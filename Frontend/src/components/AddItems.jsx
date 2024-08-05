@@ -49,12 +49,12 @@ const AddItems = () => {
   
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
-      console.error('Error adding item:', error);
+      console.error('Error adding item:', error.response ? error.response.data : error.message);
       setMessage("Please fill in correct details");
-
+    
       toast({
         title: "Error.",
-        description: "Please fill in correct details",
+        description: `An error occurred: ${error.response ? error.response.data.error : error.message}`,
         status: "error",
         duration: 5000,
         isClosable: true,

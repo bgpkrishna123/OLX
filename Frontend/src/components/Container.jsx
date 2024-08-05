@@ -27,22 +27,20 @@ const Container = ({ items, loading }) => {
       const simulateLoading = () => {
         const interval = setInterval(() => {
           setProgress((prev) => {
-            if (prev < 95) {
-              return prev + 5;
+            if (prev < 90) {
+              return prev + 10;
             }
             clearInterval(interval);
-            return 95; 
+            return 90;
           });
         }, 300);
       };
 
       simulateLoading();
-    } else {
-      setProgress(100); 
     }
   }, [loading]);
 
-  if (loading && progress < 95) return (
+  if (loading) return (
     <Center h="calc(100vh - 60px)" p={4}>
       <Box textAlign="center">
         <Progress value={progress} size="lg" colorScheme="green" mb={6} width="50%" />

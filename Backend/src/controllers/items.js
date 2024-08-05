@@ -5,6 +5,7 @@ const path = require("path");
 const createItem = async (req, res) => {
   const { name, price, location, categories, description } = req.body;
   const image = req.file ? path.basename(req.file.path) : "";
+
   try {
     const item = new itemModel({
       name,
@@ -24,7 +25,7 @@ const createItem = async (req, res) => {
     res.status(201).send(item);
   } catch (error) {
     console.error("Error creating item:", error);
-    res.status(500).send({ error: "Internal Server Error" });
+    res.status(500).send({ error: "Internal Server Error", details: error.message });
   }
 };
 
