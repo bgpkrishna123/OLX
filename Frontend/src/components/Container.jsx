@@ -27,11 +27,11 @@ const Container = ({ items, loading }) => {
       const simulateLoading = () => {
         const interval = setInterval(() => {
           setProgress((prev) => {
-            if (prev < 100) {
+            if (prev < 95) {
               return prev + 10;
             }
             clearInterval(interval);
-            return 100;
+            return 95;
           });
         }, 300);
       };
