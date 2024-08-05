@@ -225,7 +225,7 @@ const Navbar = ({ setItems , setLoading }) => {
                 >
                   <MenuButton>
                     <Flex align="center">
-                      <Avatar size="sm" name="User" />
+                      <Avatar size="sm" name={localStorage.getItem("name")} />
                       <IconButton
                         aria-label="Menu"
                         icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
