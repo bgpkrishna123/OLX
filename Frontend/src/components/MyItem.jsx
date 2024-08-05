@@ -6,18 +6,19 @@ import {
   Text,
   Flex,
   Spacer,
+  Center,
 } from '@chakra-ui/react';
 import Navbar from './Navbar';
 import url from './vars';
 import timeAgo from './timeAgo';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Make sure to import useNavigate
+import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
 const MyItem = () => {
-  const [items, setItems] = useState([]); 
+  const [items, setItems] = useState([]);
   const URL = url;
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -46,105 +47,119 @@ const MyItem = () => {
     <>
       <Navbar />
       <Box p={"10%"} pt={"5%"} pb={"5%"} mt={20}>
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)', 
-            sm: 'repeat(2, 1fr)',  
-            md: 'repeat(3, 1fr)',  
-            lg: 'repeat(4, 1fr)', 
-          }}
-          gap={4}
-        >
-          {items.map((item) => (
-            <Box
-              key={item._id}
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              maxW={200}
-              p={2}
-              onClick={() => navigate(`/itemPage/${item._id}`)}
-              position="relative"
-            >
-              <Image
-                src={`${URL}/uploads/${item.image}`}
-                alt={item.name}
-                boxSize="200px"
-                objectFit="cover"
-              />
+        {items.length === 0 ? (
+          <Center h="80vh">
+            <Text fontSize="xl" fontWeight={500} color="black" textAlign="center">
+              You have not added any items to sell yet.
+            </Text>
+          </Center>
+        ) : (
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)', 
+              sm: 'repeat(2, 1fr)',  
+              md: 'repeat(3, 1fr)',  
+              lg: 'repeat(4, 1fr)', 
+            }}
+            gap={4}
+          >
+            {items.map((item) => (
               <Box
-                textAlign="center"
-                justifyContent="center"
+                key={item._id}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                maxW={300}
+                p={2}
+                onClick={() => navigate(`/itemPage/${item._id}`)}
+                position="relative"
                 display="flex"
-                alignItems="right"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                _hover={{ cursor: 'pointer' }} 
               >
-                <Text>{timeAgo(item.createdAt)}</Text>
-              </Box>
-              <Box p={4}>
+                <Image
+                  src={`${URL}/uploads/${item.image}`}
+                  alt={item.name}
+                  boxSize="200px"
+                  objectFit="cover"
+                />
                 <Box
                   textAlign="center"
                   justifyContent="center"
-                  border="1px"
-                  borderColor="grey"
                   display="flex"
-                  alignItems="center"
-                  mb={2}
+                  alignItems="right"
+                  mt={2} 
                 >
-                  <Text fontWeight={500} fontSize="lg">
-                    {item.name}
-                  </Text>
+                  <Text>{timeAgo(item.createdAt)}</Text>
                 </Box>
-
-                <Flex>
-                  <Box fontWeight={500} fontSize={"x-large"}>
-                    <Text mt={2}>₹{item.price}</Text>
-                  </Box>
-                  <Spacer />
+                <Box p={4}>
                   <Box
+                    textAlign="center"
+                    justifyContent="center"
                     border="1px"
-                    borderStyle="dotted"
-                    bg={item.status === "sold" ? "red.500" : "green.500"}
-                    borderColor={
-                      item.status === "sold" ? "red.500" : "green.500"
-                    }
-                    borderRadius="50%"
-                    p={0.5}
+                    borderColor="grey"
                     display="flex"
                     alignItems="center"
-                    justifyContent="center"
-                    transform="rotate(-10deg) translateY(5px)"
-                    transformOrigin="center"
+                    mb={2}
                   >
+                    <Text fontWeight={500} fontSize="lg">
+                      {item.name}
+                    </Text>
+                  </Box>
+
+                  <Flex alignItems="center">
+                    <Box fontWeight={500} fontSize={"x-large"}>
+                      <Text mt={2}>₹{item.price}</Text>
+                    </Box>
+                    <Spacer />
                     <Box
-                      bg={"white"}
                       border="1px"
                       borderStyle="dotted"
+                      bg={item.status === "sold" ? "red.500" : "green.500"}
                       borderColor={
                         item.status === "sold" ? "red.500" : "green.500"
                       }
                       borderRadius="50%"
-                      p={2}
+                      p={0.5}
                       display="flex"
                       alignItems="center"
                       justifyContent="center"
+                      transform="rotate(-10deg) translateY(5px)"
+                      transformOrigin="center"
                     >
-                      <Text
-                        fontSize={"md"}
-                        fontWeight={500}
-                        color={item.status === "sold" ? "red.500" : "green.500"}
-                        textAlign="center"
+                      <Box
+                        bg={"white"}
+                        border="1px"
+                        borderStyle="dotted"
+                        borderColor={
+                          item.status === "sold" ? "red.500" : "green.500"
+                        }
+                        borderRadius="50%"
+                        p={2}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
                       >
-                        {item.status === "sold" ? "Sold" : "Unsold"}
-                      </Text>
+                        <Text
+                          fontSize={"md"}
+                          fontWeight={500}
+                          color={item.status === "sold" ? "red.500" : "green.500"}
+                          textAlign="center"
+                        >
+                          {item.status === "sold" ? "Sold" : "Unsold"}
+                        </Text>
+                      </Box>
                     </Box>
-                  </Box>
-                </Flex>
+                  </Flex>
+                </Box>
               </Box>
-            </Box>
-          ))}
-        </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
-      <Footer/>
+      <Footer />
     </>
   );
 };

@@ -238,7 +238,7 @@ const Navbar = ({ setItems , setLoading }) => {
                     </Flex>
                   </MenuButton>
                   <MenuList>
-                    <MenuItem as={Link} to="/profile">
+                    <MenuItem as={Link} to="/">
                       Profile
                     </MenuItem>
                     <MenuItem as={Link} to="/myItems">

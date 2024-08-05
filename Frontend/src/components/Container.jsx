@@ -84,10 +84,14 @@ const Container = ({ items, loading }) => {
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
-            maxW={200}
+            maxW={300}
             p={2}
             onClick={() => navigate(`/itemPage/${item._id}`)}
             position="relative"
+            display="flex"
+            flexDirection="column"
+            alignItems="center" 
+            justifyContent="center"
           >
             <Image
               src={`${URL}/uploads/${item.image}`}
@@ -100,10 +104,11 @@ const Container = ({ items, loading }) => {
               justifyContent="center"
               display="flex"
               alignItems="right"
+              mt={2} 
             >
               <Text>{timeAgo(item.createdAt)}</Text>
             </Box>
-            <Box p={4}>
+            <Box p={4} textAlign="center">
               <Box
                 textAlign="center"
                 justifyContent="center"
@@ -118,7 +123,7 @@ const Container = ({ items, loading }) => {
                 </Text>
               </Box>
 
-              <Flex>
+              <Flex justifyContent="center" alignItems="center">
                 <Box fontWeight={500} fontSize={"x-large"}>
                   <Text mt={2}>₹{item.price}</Text>
                 </Box>
