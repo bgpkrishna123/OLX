@@ -211,7 +211,7 @@ const Navbar = ({ setItems , setLoading }) => {
               borderRight="5px solid #3a77ff"
               borderBottom="5px solid #ffce32"
               className="sellBtn"
-              onClick={() => navigate("/addItem")}
+              onClick={() =>isLoggedIn? navigate("/addItem"): navigate("/login")}
             >
               <AddIcon mr="5px" />
               SELL
